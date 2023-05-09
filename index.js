@@ -35,20 +35,26 @@ app.post('/users/create', async(req, res) =>{
         newsletter = false
     }
 
-    console.log(newsletter, name, occupation)
-
-
     await User.create({name, occupation, newsletter})
 
     res.redirect('/')
+})
+
+app.get('/users/:id', async (req, res) =>{
+    const id = req.params.id
+
+    const user = await User.findOne({raw: true, where: {id: id}})
+
+    console.log(user)
+
+    res.render('userview', {user})
 })
 
 app.get('/', async (req, res) => {
 
     const users = await User.findAll({raw: true})
 
-
-  res.render('home', {users})
+    res.render('home', {users})
 })
 
 conn.sync().then(()=>{

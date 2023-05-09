@@ -2,8 +2,11 @@
 <div class="container">
     {{#each users}}
         <div class="item">
-            <p>Nome: {{this.name}}</p>
-            <p>Ocupação: {{this.occupation}}</p>
-        </div>     
+            <h2>{{this.name}}</h2>
+            <p>{{this.occupation}}</p>
+            <div class="action">
+                <a href="/users/{{this.id}}">Ver detalhes</a>
+            </div>
+        </div> 
     {{/each}}
 </div>
