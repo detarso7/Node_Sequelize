@@ -3,6 +3,7 @@ const app = express()
 const port = 3000
 const conn = require('./db/conn')
 const User = require('./models/User')
+const Address = require('./models/Address')
 
 const exphbs = require('express-handlebars')
 
@@ -93,7 +94,10 @@ app.get('/', async (req, res) => {
     res.render('home', {users})
 })
 
-conn.sync().then(()=>{
+conn
+//.sync()
+.sync({force: true})
+.then(()=>{
     app.listen(port, ()=>{
         console.log('Aplicação funcionando na porta 3000')
     })
