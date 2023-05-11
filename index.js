@@ -69,24 +69,6 @@ app.post('/users/delete/:id', async(req, res)=>{
     res.redirect('/')
 })
 
- //GET ADDRESS
- app.get('/users/edit/:id', async (req, res) =>{
-
-    const id = req.params.id
-
-    try {
-
-        const user = await User.findOne({include: Address, where: {id: id}})
-        console.log(user)
-    
-        res.render('editusers', {user: user.get({plain: true})})
-        
-    } catch (error) {
-        console.log(error)
-    }
-
-})
-
 // UPDATE
 app.post('/users/update/', async(req, res)=>{
     const id = req.body.id
@@ -125,6 +107,27 @@ app.post('/address/create', async(req, res)=>{
 
 })
 
+
+ //GET ADDRESS
+ app.get('/users/edit/:id', async (req, res) =>{
+
+    const id = req.params.id
+
+    const user = await User.findAll({include: Address, where: {id: id}})
+    console.log(user)
+
+    res.render('editusers', {user: user.get({plain: true})})
+
+})
+
+app.get('/address/delete', async (req, res) => {
+    const UserId = req.body.UserId
+    const id = req.body.id
+
+    await Address.destroy({where: {id: id}})
+
+    res.redirect(`/users/edit/${UserId}`)
+})
 
 // HOME -------------------------------------------------------------
 
