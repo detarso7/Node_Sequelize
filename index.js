@@ -60,19 +60,6 @@ app.get('/users/edit/:id', async (req, res) =>{
     res.render('editusers', {user})
 })
 
-app.get('/users/edit/:id', async (req, res) =>{
-
-    try {
-        const id = req.params.id
-
-        const user = await User.findOne({include: Address, where: {id: id}})
-    
-        res.render('editusers', {user: user.get({plain: true})})
-    } catch (error) {
-        console.log(error)
-    }
-
-})
 
 // DELETE
 app.post('/users/delete/:id', async(req, res)=>{
@@ -80,6 +67,24 @@ app.post('/users/delete/:id', async(req, res)=>{
 
     await User.destroy({where: {id}})
     res.redirect('/')
+})
+
+ //GET ADDRESS
+ app.get('/users/edit/:id', async (req, res) =>{
+
+    const id = req.params.id
+
+    try {
+
+        const user = await User.findOne({include: Address, where: {id: id}})
+        console.log(user)
+    
+        res.render('editusers', {user: user.get({plain: true})})
+        
+    } catch (error) {
+        console.log(error)
+    }
+
 })
 
 // UPDATE
@@ -111,6 +116,8 @@ app.post('/address/create', async(req, res)=>{
     const city = req.body.city
 
     const address = {UserId, street, number, city}
+
+    console.log(address)
 
     await Address.create(address)
 
