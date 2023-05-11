@@ -21,3 +21,32 @@
     <input type="submit" value="Editar">
 
 </form>
+
+<div class="address-container">
+<h2>Cadastrar Endereço</h2>
+<form action="/address/create" method="POST">
+    <input type="hidden" name="UserId" value="{{user.id}}">
+
+    <div class="form-control">
+        <label for="street">Rua:</label>
+        <input type="text" name="street" placeholder="Digite o nome da rua" >
+    </div>
+        <div class="form-control">
+        <label for="number">Numero:</label>
+        <input type="text" name="number" placeholder="Digite o número da casa">
+    </div>
+        <div class="form-control">
+        <label for="city">Cidade:</label>
+        <input type="text" name="cidty" placeholder="Digite o nome da cidade">
+    </div>
+    <input type="submit" value="Incluir Endereço">
+
+</form>
+</div>
+
+<div>
+    <h1>Endereços:</h1>
+    {{#each user.addresses}}
+        <p>{{this.id}} -- {{this.street}} -- {{this.number}} -- {{this.city}}</p>
+    {{/each}}
+</div>

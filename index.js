@@ -60,6 +60,20 @@ app.get('/users/edit/:id', async (req, res) =>{
     res.render('editusers', {user})
 })
 
+app.get('/users/edit/:id', async (req, res) =>{
+
+    try {
+        const id = req.params.id
+
+        const user = await User.findOne({include: Address, where: {id: id}})
+    
+        res.render('editusers', {user: user.get({plain: true})})
+    } catch (error) {
+        console.log(error)
+    }
+
+})
+
 // DELETE
 app.post('/users/delete/:id', async(req, res)=>{
     const id = req.params.id
@@ -87,6 +101,26 @@ app.post('/users/update/', async(req, res)=>{
     res.redirect('/')
 })
 
+
+// EDDRESS -------------------------------------------------------------
+
+app.post('/address/create', async(req, res)=>{
+    const UserId = req.body.UserId
+    const street = req.body.street
+    const number = req.body.number
+    const city = req.body.city
+
+    const address = {UserId, street, number, city}
+
+    await Address.create(address)
+
+    res.redirect(`/users/edit/${UserId}`)
+
+})
+
+
+// HOME -------------------------------------------------------------
+
 app.get('/', async (req, res) => {
 
     const users = await User.findAll({raw: true})
@@ -95,8 +129,8 @@ app.get('/', async (req, res) => {
 })
 
 conn
-//.sync()
-.sync({force: true})
+.sync()
+//.sync({force: true})
 .then(()=>{
     app.listen(port, ()=>{
         console.log('Aplicação funcionando na porta 3000')
